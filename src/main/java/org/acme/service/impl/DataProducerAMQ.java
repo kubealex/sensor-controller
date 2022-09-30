@@ -1,5 +1,6 @@
 package org.acme.service.impl;
 
+import javax.inject.Inject;
 import javax.xml.crypto.Data;
 
 import org.acme.model.SensorData;
@@ -11,12 +12,15 @@ import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 
 import io.quarkus.logging.Log;
+import io.smallrye.reactive.messaging.annotations.Broadcast;
 public class DataProducerAMQ implements IDataProducer{
 
     private Counter sampleCounter;
     private final MeterRegistry sentSamples;
-
-    @Channel("sensor-data-in") Emitter<SensorData> sensorDataEmitter;
+    @Broadcast
+    @Inject
+    @Channel("sensor-data-out")
+    Emitter<SensorData> sensorDataEmitter;
 
     DataProducerAMQ(MeterRegistry sentSamples) {
         this.sentSamples=sentSamples;

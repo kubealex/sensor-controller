@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 import org.acme.model.SensorData;
 import org.acme.service.IDataProducer;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+
 import io.quarkus.logging.Log;
 
 @Tag(name= "Sensor Controller")
