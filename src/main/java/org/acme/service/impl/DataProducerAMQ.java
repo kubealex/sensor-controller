@@ -6,8 +6,6 @@ import org.acme.model.SensorData;
 import org.acme.service.IDataProducer;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -15,7 +13,6 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.quarkus.logging.Log;
 public class DataProducerAMQ implements IDataProducer{
 
-    private static final Logger logger = LoggerFactory.getLogger("DataProducerAMQ");
     private Counter sampleCounter;
     private final MeterRegistry sentSamples;
 
