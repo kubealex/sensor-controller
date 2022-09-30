@@ -1,21 +1,33 @@
 package org.acme.service.impl;
 
+import javax.xml.crypto.Data;
+
 import org.acme.model.SensorData;
 import org.acme.service.IDataProducer;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
-import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 
+import io.quarkus.logging.Log;
 public class DataProducerAMQ implements IDataProducer{
-    private final MeterRegis
+
     private static final Logger logger = LoggerFactory.getLogger("DataProducerAMQ");
+    private Counter sampleCounter;
+    private final MeterRegistry sentSamples;
 
     @Channel("sensor-data-in") Emitter<SensorData> sensorDataEmitter;
+
+    DataProducerAMQ(MeterRegistry sentSamples) {
+        this.sentSamples=sentSamples;
+        sampleCounter = this.sentSamples.counter("amq.samples.sent");
+    }
     public void sendData(SensorData data) {
+        sampleCounter.increment();
         sensorDataEmitter.send(data);
-        logger.debug("test");
+        Log.info("test");
     }
 }
