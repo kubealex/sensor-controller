@@ -29,6 +29,5 @@ public class DataProducerAMQ implements IDataProducer{
     public void sendData(SensorData data) {
         sampleCounter.increment();
         sensorDataEmitter.send(data);
-        Log.info("test");
     }
 }
