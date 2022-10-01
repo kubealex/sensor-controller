@@ -1,5 +1,7 @@
 package org.acme.model;
 
+import java.time.Instant;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SensorData {
@@ -9,11 +11,14 @@ public class SensorData {
     private Double temperature;
     @JsonProperty("sensor_id")
     private String deviceID;
+    @JsonProperty("sensor_timestamp")
+    private Instant timestamp;
 
     public SensorData(String location, Double temperature, String deviceID) {
         this.location = location;
         this.temperature = temperature;
         this.deviceID = deviceID;
+        this.timestamp = Instant.now();
     }
 
     public String getLocation() {

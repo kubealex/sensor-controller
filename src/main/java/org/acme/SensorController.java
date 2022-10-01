@@ -1,5 +1,6 @@
 package org.acme;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -15,6 +16,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import io.quarkus.logging.Log;
 
 @Tag(name="Sensor Controller")
+@ApplicationScoped
 @Path("/api/v1")
 public class SensorController {
     @Inject
