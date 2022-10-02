@@ -14,6 +14,7 @@ import org.acme.service.IDataProducer;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import io.quarkus.logging.Log;
+import io.vertx.core.json.Json;
 
 @Tag(name="Sensor Controller")
 @ApplicationScoped
@@ -29,6 +30,7 @@ public class SensorController {
     public Response sendData(SensorData sensorData) {
         Log.info("Received sensor data from device");
         dataProducerAMQ.sendData(sensorData);
+        Log.info(Json.encode(sensorData));
         return Response.ok().build();
     }
 }
