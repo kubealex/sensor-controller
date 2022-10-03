@@ -16,7 +16,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import io.quarkus.logging.Log;
 import io.vertx.core.json.Json;
 
-@Tag(name="Sensor Controller")
+@Tag(name = "Sensor Controller")
 @ApplicationScoped
 @Path("/api/v1")
 public class SensorController {

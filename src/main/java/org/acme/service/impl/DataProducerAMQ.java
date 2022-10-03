@@ -13,7 +13,8 @@ import io.micrometer.core.instrument.MeterRegistry;
 
 import io.quarkus.logging.Log;
 import io.smallrye.reactive.messaging.annotations.Broadcast;
-public class DataProducerAMQ implements IDataProducer{
+
+public class DataProducerAMQ implements IDataProducer {
 
     private Counter sampleCounter;
     private final MeterRegistry sentSamples;
@@ -23,7 +24,7 @@ public class DataProducerAMQ implements IDataProducer{
     Emitter<SensorData> sensorDataEmitter;
 
     DataProducerAMQ(MeterRegistry sentSamples) {
-        this.sentSamples=sentSamples;
+        this.sentSamples = sentSamples;
         sampleCounter = this.sentSamples.counter("amq.samples.sent");
     }
 
