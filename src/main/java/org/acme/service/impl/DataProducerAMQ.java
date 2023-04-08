@@ -1,7 +1,6 @@
 package org.acme.service.impl;
 
 import javax.inject.Inject;
-import javax.xml.crypto.Data;
 
 import org.acme.model.SensorData;
 import org.acme.service.IDataProducer;
@@ -11,7 +10,6 @@ import org.eclipse.microprofile.reactive.messaging.Emitter;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 
-import io.quarkus.logging.Log;
 import io.smallrye.reactive.messaging.annotations.Broadcast;
 
 public class DataProducerAMQ implements IDataProducer {
