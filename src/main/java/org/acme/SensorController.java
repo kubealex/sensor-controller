@@ -3,6 +3,7 @@ package org.acme;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import org.acme.model.InfluxQueries;
 import org.acme.service.InfluxDBService;
 import org.acme.service.InfluxDBServiceException;
 
@@ -16,8 +17,8 @@ public class SensorController {
     InfluxDBService influxDBService;
 
     @Scheduled(every = "20s")
-    public void generateData() throws InfluxDBServiceException {
-        String query = "from(bucket: \"devconf-demo\") |> range(start: -10m) |> filter(fn: (r) => r[\"_measurement\"] == \"SensorData\") |> filter(fn: (r) => r[\"_field\"] == \"temperature\") |> aggregateWindow(every: 10m, fn: mean, createEmpty: false) |> yield(name: \"mean\")";
+    public void handleData() throws InfluxDBServiceException {
+        String query = InfluxQueries.queryBuilder("temperature", "sensor-t1", "fridge-room-c1-indoor");
         Log.info("Received sensor data from device");
         influxDBService.queryInfluxDB(query);
         Log.info("Trying again in 20s");
