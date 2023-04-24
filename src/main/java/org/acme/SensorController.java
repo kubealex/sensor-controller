@@ -28,7 +28,6 @@ public class SensorController {
     @ConfigProperty(name = "sensor.location", defaultValue = "fridge-room-c1-outdoor")
     String location;
 
-
     @Inject
     DataSenderAMQ dataSenderAMQ;
     @Inject
@@ -37,14 +36,16 @@ public class SensorController {
     private static Boolean alertSent = false;
 
     @Scheduled(every = "20s")
-    public void handleData() throws InfluxDBServiceException{
+    public void handleData() throws InfluxDBServiceException {
         Log.info("Received sensor data from device");
         anomalyDetection();
         Log.info("Trying again in 20s");
     }
 
-    public Boolean anomalyDetection() throws InfluxDBServiceException{
-        List<FluxRecord> internalTemperature = influxDBService.queryInfluxDB(InfluxQueries.queryBuilder("temperature", deviceID, location));
+    public Boolean anomalyDetection() throws InfluxDBServiceException {
+        List<FluxRecord> internalTemperature = influxDBService
+                .queryInfluxDB(InfluxQueries.queryBuilder("temperature", deviceID, location));
+
         Double deltaTemperature = 0.0;
         if (internalTemperature.size() <= 1)
             deltaTemperature = (Double) internalTemperature.get(0).getValue() - sensorThreshold;
@@ -54,7 +55,8 @@ public class SensorController {
             Log.error("Anomaly detected: temperature is above threshold");
             if (!alertSent) {
                 Log.warn("ALERT SENT");
-                AnomalyEvent anomalyEvent = new AnomalyEvent(location, deviceID, deltaTemperature, "temperatureAnomaly");
+                AnomalyEvent anomalyEvent = new AnomalyEvent(location, deviceID, deltaTemperature,
+                        "temperatureAnomaly");
                 Log.info(Json.encode(anomalyEvent));
                 dataSenderAMQ.sendData(anomalyEvent);
                 alertSent = true;
