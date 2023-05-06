@@ -2,8 +2,8 @@ package org.acme;
 
 import java.util.List;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.acme.model.AnomalyEvent;
 import org.acme.model.InfluxQueries;

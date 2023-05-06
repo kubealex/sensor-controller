@@ -1,6 +1,6 @@
 package org.acme.service;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.acme.model.AnomalyEvent;
 import org.eclipse.microprofile.reactive.messaging.Channel;
