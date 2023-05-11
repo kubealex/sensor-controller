@@ -34,10 +34,7 @@ public class InfluxDBService {
             Log.info("Connected to InfluxDB");
             QueryApi queryApi = influxDBClient.getQueryApi();
             List<FluxTable> tables = queryApi.query(query);
-            List<FluxRecord> queryRecords = tables.get(0).getRecords();
-            // System.out.println(tables.size());
-            // for (FluxTable fluxTable : tables) {
-            //     List<FluxRecord> records = fluxTable.getRecords();
+            List<FluxRecord> queryRecords = tables.get(0) .getRecords();
                 for (FluxRecord fluxRecord : queryRecords) {
                     System.out.println(fluxRecord.getValueByKey("_value"));
                 }
