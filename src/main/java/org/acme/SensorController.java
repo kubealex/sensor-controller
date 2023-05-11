@@ -45,7 +45,6 @@ public class SensorController {
     public Boolean anomalyDetection() throws InfluxDBServiceException {
         List<FluxRecord> internalTemperature = influxDBService
                 .queryInfluxDB(InfluxQueries.queryBuilder("temperature", deviceID, location));
-        Log.error(internalTemperature.size());
         Double deltaTemperature = 0.0;
         if (internalTemperature.size() <= 1)
             deltaTemperature = (Double) internalTemperature.get(0).getValue() - sensorThreshold;
