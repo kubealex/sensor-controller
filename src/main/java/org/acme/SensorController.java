@@ -21,7 +21,7 @@ import io.vertx.core.json.Json;
 @ApplicationScoped
 public class SensorController {
 
-    @ConfigProperty(name = "sensor.threshold", defaultValue = "29.0")
+    @ConfigProperty(name = "sensor.threshold", defaultValue = "30.0")
     Double sensorThreshold;
     @ConfigProperty(name = "sensor.device-id", defaultValue = "ext-01")
     String deviceID;
@@ -46,8 +46,10 @@ public class SensorController {
         List<FluxRecord> internalTemperature = influxDBService
                 .queryInfluxDB(InfluxQueries.queryBuilder("temperature", deviceID, location));
         Double deltaTemperature = 0.0;
-        if (internalTemperature.size() <= 1)
+        if (internalTemperature.size() <= 1) {
             deltaTemperature = (Double) internalTemperature.get(0).getValue() - sensorThreshold;
+            sensorThreshold = (Double) internalTemperature.get(0).getValue();
+        }
         else
             deltaTemperature = (Double) internalTemperature.get(1).getValue() - (Double) internalTemperature.get(0).getValue();
         if (deltaTemperature > 2.0 || deltaTemperature < -2.0) {
