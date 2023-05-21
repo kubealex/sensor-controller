@@ -33,7 +33,8 @@ public class SensorController {
     @Inject
     InfluxDBService influxDBService;
 
-    private static Boolean alertSent = false;
+    private Double actualValue = 0.0;
+    private Double deltaTemperature = 0.0;
 
     @Scheduled(every = "20s")
     public void handleData() throws InfluxDBServiceException {
@@ -43,28 +44,22 @@ public class SensorController {
     }
 
     public Boolean anomalyDetection() throws InfluxDBServiceException {
-        List<FluxRecord> internalTemperature = influxDBService
+        List<FluxRecord> externalTemperature = influxDBService
                 .queryInfluxDB(InfluxQueries.queryBuilder("temperature", deviceID, location));
-        Double deltaTemperature = 0.0;
-        if (internalTemperature.size() <= 1) {
-            deltaTemperature = (Double) internalTemperature.get(0).getValue() - sensorThreshold;
-            sensorThreshold = (Double) internalTemperature.get(0).getValue();
-        }
-        else
-            deltaTemperature = (Double) internalTemperature.get(1).getValue() - (Double) internalTemperature.get(0).getValue();
+        Integer sampleIndex = externalTemperature.size() - 1;
+        deltaTemperature = (Double) externalTemperature.get(sampleIndex).getValue() - sensorThreshold;
+        actualValue = (Double) externalTemperature.get(sampleIndex).getValue();
+
         if (Math.abs(deltaTemperature) > 2.0) {
             Log.error("Anomaly detected: temperature is above threshold");
-            if (!alertSent) {
-                Log.warn("ALERT SENT");
-                AnomalyEvent anomalyEvent = new AnomalyEvent(location, deviceID, deltaTemperature,
-                        "temperatureAnomaly");
-                Log.info(Json.encode(anomalyEvent));
-                dataSenderAMQ.sendData(anomalyEvent);
-                alertSent = true;
-            }
+            sensorThreshold = actualValue;
+            Log.warn("ALERT SENT");
+            AnomalyEvent anomalyEvent = new AnomalyEvent(location, deviceID, deltaTemperature,
+                    "temperatureAnomaly");
+            Log.info(Json.encode(anomalyEvent));
+            dataSenderAMQ.sendData(anomalyEvent);
             return true;
         }
-        alertSent = false;
         return false;
     }
 }
