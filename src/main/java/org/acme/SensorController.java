@@ -52,7 +52,7 @@ public class SensorController {
         }
         else
             deltaTemperature = (Double) internalTemperature.get(1).getValue() - (Double) internalTemperature.get(0).getValue();
-        if (deltaTemperature > 2.0 || deltaTemperature < -2.0) {
+        if (Math.abs(deltaTemperature) > 2.0) {
             Log.error("Anomaly detected: temperature is above threshold");
             if (!alertSent) {
                 Log.warn("ALERT SENT");
