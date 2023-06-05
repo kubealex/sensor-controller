@@ -11,7 +11,6 @@ import org.acme.service.DataSenderAMQ;
 import org.acme.service.InfluxDBService;
 import org.acme.service.InfluxDBServiceException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-
 import com.influxdb.query.FluxRecord;
 
 import io.quarkus.logging.Log;
